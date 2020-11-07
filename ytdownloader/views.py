@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from pytube import YouTube
+import pafy
 from django.http import FileResponse,HttpResponse
 
 
@@ -9,26 +9,14 @@ def index(request):
 def download(request):
     try:
         url = request.GET.get('url')
-        yt = YouTube(url)
-        ele = set()
-        for elem in yt.streams:
-            if elem.resolution != None:
-                ele.add(elem.resolution)     
-        params = {'Title':yt.title,'Thumbnail_Url':yt.thumbnail_url,'views':yt.views,'resolution':ele,'url':url}
+        video = pafy.new(url)
+        ele = {}
+        for elem in video.streams:
+            ele[elem.quality]=elem.url
+        print(ele)
+        params = {'Title':video.title,'Thumbnail_Url':video.thumb,'views':video.viewcount,'resolution':ele,'duration':video.duration,'author':video.author}
         return render(request,'download.html',params)
     except:
-        return render(request,'error.html')
-
-def start_download(request):
-    try:
-        url = request.GET.get('url')
-        quality = request.GET.get('quality')
-        yt = YouTube(url)
-        print(quality)
-        ys = yt.streams.get_by_resolution(quality)
-        response = redirect(ys.url)
-        return response
-    except :
         return render(request,'error.html')
 
 def about(request):

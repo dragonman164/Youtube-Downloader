@@ -4,7 +4,10 @@
   <h1 style="text-align:center; padding-top:20px;padding-left: 20px; font-size:35px">Title: {{ Title }}</h1>
   <img style="float: left; border: 10px solid rgb(27, 201, 4);margin-right: 100px;"  src="{{ Thumbnail_Url }}" width="400" height="300" >
   <br>
+  <h3 style="text-align:center;font-size:30px">Author: {{ author }}</h3>
   <h3 style="text-align:center;font-size:30px">Views: {{ views }}</h2>
+    <h3 style="text-align:center;font-size:30px">Duration: {{ duration }}</h2>
+
   <br>
   <h3 style="text-align:center;font-size:30px" >Available Qualities of Videos</h3>
   <br>
@@ -17,11 +20,11 @@
       </tr>
     </thead>
     <tbody>
-        {% for elem in resolution %}
+        {% for key,value in resolution.items %}
       <tr>
         <th scope="row">{{forloop.counter}}</th>
-        <td>{{elem}}</td>
-        <td> <a href="/startdownload?url={{url}}&quality={{elem}}"><button type="submit" class="btn btn-primary">Download</button></a></td>
+        <td>{{key}}</td>
+        <td> <a href="{{value}}"><button type="submit" class="btn btn-primary">Download</button></a></td>
       </tr>
       {% endfor %}
     </tbody>
